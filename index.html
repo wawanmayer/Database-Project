@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fetch Data Example</title>
+</head>
+<body>
+
+    <style> 
+
+    body {
+        font-family: Times New Roman;
+        margin: 20px;
+    }
+
+    h2 {
+        color: #333;
+        text-align: center;
+    }
+
+    .forox {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    input {
+        padding: 8px;
+        margin-right: 10px;
+        border: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+
+    button {
+        padding: 8px 14px;
+        cursor: pointer;
+        color: white;
+        background-color: #ff5ea4;
+        border-radius: 5px;
+        border: none;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 70%;
+        margin: auto;
+        background-color: rgb(255, 235, 235); 
+
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #B7D487;
+    }
+
+    select {
+        padding: 8px;
+        margin-right: 10px;
+        
+        border: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        text-align: center;
+
+    }
+
+    .delton {
+        background-color: crimson;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        
+    }
+    </style>
+
+        <div style="text-align:center; margin-bottom:20px;">
+        <button onclick="showTable('students')">Students</button>
+        <button onclick="showTable('lecture')">Lecturers</button>
+        </div>
+
+        <div id="studentSection" style="display:none;">
+
+
+    <table border="1">
+        <h2>Student Data</h2>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Major</th>
+            </tr>
+        </thead>
+        <tbody id="studentTable"></tbody>
+    </table>
+
+    </div>
+
+            <div id="lectureSection" style="display:none;">
+
+    <h2>Lecture Data</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>ID</th>
+                <th>Lecturer Name</th>
+                <th>Major / Subject</th>
+            </tr>
+        </thead>
+        <tbody id="lectureTable"></tbody>
+    </table>
+
+    </div>
+
+    <script>
+        function showTable(type) {
+        if (type === 'students') {
+            document.getElementById('studentSection').style.display = 'block';
+            document.getElementById('lectureSection').style.display = 'none';
+        } else {
+            document.getElementById('studentSection').style.display = 'none';
+            document.getElementById('lectureSection').style.display = 'block';
+        }
+    }
+        fetch('data.php')
+        .then(response => response.json())
+        .then(data => {
+
+            let studentOutput = '';
+            let lectureOutput = '';
+
+            data.students.forEach((students, index) => {
+                studentOutput += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${students.id}</td>
+                    <td>${students.name}</td>
+                    <td>${students.major}</td>
+                </tr>
+                `;
+            });
+
+            data.lecture.forEach((lecture, index) => {
+                lectureOutput += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${lecture.ID}</td>
+                    <td>${lecture.Name}</td>
+                    <td>${lecture.Subject}</td>
+                </tr>
+                `;
+            });
+
+            document.getElementById('studentTable').innerHTML = studentOutput;
+            document.getElementById('lectureTable').innerHTML = lectureOutput;
+        });
+        </script>
+
+</body>
+</html>
